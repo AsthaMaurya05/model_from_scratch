@@ -71,36 +71,43 @@ class VisionTransformer(nn.Module):
             x = block(x)
         return self.mlp_head(x[:, 0])
     
-# 6. Training the Vision Transformer
-import torch.optim as optim
-from torchvision import datasets, transforms
+def main():
+    # 6. Training the Vision Transformer
+    import torch.optim as optim
+    from torchvision import datasets, transforms
 
-transform = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor()
-])
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-train_data = datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
-train_loader = torch.utils.data.DataLoader(train_data, batch_size=32, shuffle=True)
+    transform = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor()
+    ])
 
-model = VisionTransformer()
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.001)
+    train_data = datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
+    train_loader = torch.utils.data.DataLoader(train_data, batch_size=32, shuffle=True)
 
-# Training loop
-for epoch in range(5):  # Train for 5 epochs
-    model.train()
-    running_loss = 0.0
-    for inputs, labels in train_loader:
-        inputs, labels = inputs.cuda(), labels.cuda()  # Move to GPU if available
-        optimizer.zero_grad()
+    model = VisionTransformer().to(device)
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.Adam(model.parameters(), lr=0.001)
 
-        outputs = model(inputs)
-        loss = criterion(outputs, labels)
-        loss.backward()
-        optimizer.step()
+    # Training loop
+    for epoch in range(5):  # Train for 5 epochs
+        model.train()
+        running_loss = 0.0
+        for inputs, labels in train_loader:
+            inputs, labels = inputs.to(device), labels.to(device)
+            optimizer.zero_grad()
 
-        running_loss += loss.item()
+            outputs = model(inputs)
+            loss = criterion(outputs, labels)
+            loss.backward()
+            optimizer.step()
 
-    print(f"Epoch [{epoch+1}/5], Loss: {running_loss/len(train_loader)}")
+            running_loss += loss.item()
+
+        print(f"Epoch [{epoch+1}/5], Loss: {running_loss/len(train_loader)}")
+
+
+if __name__ == "__main__":
+    main()
     

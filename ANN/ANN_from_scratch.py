@@ -41,7 +41,8 @@ def forward_propagation(X, parameters):
 # Step 5: Computing the Cost
 def compute_cost(Y, A2):
     m = Y.shape[1]
-    cost = -np.sum(Y * np.log(A2) + (1 - Y) * np.log(1 - A2)) / m
+    epsilon = 1e-8
+    cost = -np.sum(Y * np.log(A2 + epsilon) + (1 - Y) * np.log(1 - A2 + epsilon)) / m
     return np.squeeze(cost)
 
 # Step 6: Backpropagation
@@ -88,12 +89,17 @@ def predict(X, parameters):
     A2, _ = forward_propagation(X, parameters)
     return (A2 > 0.5).astype(int)
 
-#step 10: Testing the model
-X = np.array([[0, 0, 1, 1], [0, 1, 0, 1]])
-Y = np.array([[0, 0, 0, 1]])
+def main():
+    # step 10: Testing the model
+    X = np.array([[0, 0, 1, 1], [0, 1, 0, 1]])
+    Y = np.array([[0, 0, 0, 1]])
 
-trained_parameters = train_neural_network(
-    X, Y, input_size=2, hidden_size=4, output_size=1, epochs=10000, learning_rate=0.1)
+    trained_parameters = train_neural_network(
+        X, Y, input_size=2, hidden_size=4, output_size=1, epochs=10000, learning_rate=0.1)
 
-predictions = predict(X, trained_parameters)
-print("Predictions:", predictions)
+    predictions = predict(X, trained_parameters)
+    print("Predictions:", predictions)
+
+
+if __name__ == "__main__":
+    main()
