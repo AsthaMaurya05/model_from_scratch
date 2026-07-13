@@ -8,6 +8,8 @@ This repository contains small, self-contained implementations of classic deep l
 model_from_scratch/
 |-- ANN/
 |   `-- ANN_from_scratch.py
+|-- CLIP/
+|   `-- Clip_from_scratch.py
 |-- CNN/
 |   `-- CNN_from_scratch.py
 |-- Transformer/
