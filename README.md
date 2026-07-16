@@ -13,7 +13,7 @@ model_from_scratch/
 |-- CNN/
 |   `-- CNN_from_scratch.py
 |-- RNN/
-|   `-- RNN_from_scratch.py
+|   `-- rnn_from_scratch.py
 |-- Transformer/
 |   `-- transformer_from_scratch.py
 |-- VIT/
