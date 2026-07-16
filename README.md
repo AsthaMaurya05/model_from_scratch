@@ -12,6 +12,8 @@ model_from_scratch/
 |   `-- Clip_from_scratch.py
 |-- CNN/
 |   `-- CNN_from_scratch.py
+|-- RNN/
+|   `-- RNN_from_scratch.py
 |-- Transformer/
 |   `-- transformer_from_scratch.py
 |-- VIT/
